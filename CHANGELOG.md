@@ -1,5 +1,9 @@
 # Change log
 
+## 2.5.0 / 2020-09-25
+
+- Add 'inlineIncludes' option
+
 ## 2.3.0 / 2016-08-22
 
 - Use explicit pug-walk dependency; fixes installation on npm v2
