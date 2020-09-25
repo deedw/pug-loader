@@ -48,6 +48,8 @@ The following [options] are available to be set for the loader. They are all map
 - `filters`
 - `root`
   - webpack uses its own file resolving mechanism, so while it is functionally equivalent to the Pug option with the same name, it is implemented differently
+- `inlineIncludes`
+  - Boolean. If true, all includes are inlined. By default includes without mixins are required
 
 ### Embedded resources
 

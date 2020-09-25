@@ -22,6 +22,7 @@ module.exports = function(source) {
 	var loadModule = this.loadModule;
 	var resolve = this.resolve;
 	var loaderContext = this;
+	var inlineIncludes = !!query.inlineIncludes;
 	var callback;
 
 	var fileContents = {};
@@ -115,7 +116,7 @@ module.exports = function(source) {
 					}
 				}
 			}, function (node, replace) {
-				if (node.type === "Include" && !(node.block && node.block.nodes.length) && !node.file.ast._mustBeInlined) {
+				if (node.type === "Include" && !inlineIncludes && !(node.block && node.block.nodes.length) && !node.file.ast._mustBeInlined) {
 					replace({
 						type: "Code",
 						val: "require(" + loaderUtils.stringifyRequest(loaderContext, node.file.fullPath) + ").call(this, locals)",
@@ -147,6 +148,9 @@ module.exports = function(source) {
 					plugin
 				].concat(query.plugins || [])
 			});
+
+			var runtime = "var pug = require(" + loaderUtils.stringifyRequest(loaderContext, "!" + modulePaths.runtime) + ");\n\n";
+			loaderContext.callback(null, runtime + tmplFunc.toString() + ";\nmodule.exports = template;");
 		} catch(e) {
 			if(missingFileMode) {
 				// Ignore, it'll continue after async action
@@ -156,7 +160,5 @@ module.exports = function(source) {
 			loaderContext.callback(e);
 			return;
 		}
-		var runtime = "var pug = require(" + loaderUtils.stringifyRequest(loaderContext, "!" + modulePaths.runtime) + ");\n\n";
-		loaderContext.callback(null, runtime + tmplFunc.toString() + ";\nmodule.exports = template;");
 	}
 }
