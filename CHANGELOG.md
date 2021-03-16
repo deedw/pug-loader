@@ -1,5 +1,9 @@
 # Change log
 
+## 2.5.1 / 2021-03-16
+
+- Update pug peer dependency to ^3.0.2
+
 ## 2.5.0 / 2020-09-25
 
 - Add 'inlineIncludes' option
